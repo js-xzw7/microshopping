@@ -1,0 +1,15 @@
+go 1.21.6
+
+use (
+	./adservice
+	./cartservice
+	./checkoutservice
+	./currencyservice
+	./emailservice
+	./frontend
+	./paymentservice
+	./productcatalogservice
+	./recommendationservice
+	./shippingservice
+	./testProto
+)

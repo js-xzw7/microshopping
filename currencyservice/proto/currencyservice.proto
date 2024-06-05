@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+package microshopping;
+option go_package = "./proto;microshopping";
+
+//--------------------货币服务 Currency service--------------------------
