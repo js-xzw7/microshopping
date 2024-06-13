@@ -11,5 +11,4 @@ use (
 	./productcatalogservice
 	./recommendationservice
 	./shippingservice
-	./testProto
 )
