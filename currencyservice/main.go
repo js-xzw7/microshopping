@@ -8,7 +8,7 @@ import (
 	"currencyservice/handler"
 	pb "currencyservice/proto"
 
-	// "github.com/hashicorp/consul/api"
+	capi "github.com/hashicorp/consul/api"
 	"google.golang.org/grpc"
 )
 
@@ -17,6 +17,26 @@ const ADDRESS = "127.0.0.1"
 
 func main() {
 	ipadd := fmt.Sprintf("%s:%d", ADDRESS, PORT)
+
+	//------------------consul 注册---------------
+	consulConfig := capi.DefaultConfig()
+	consulClient, err := capi.NewClient(consulConfig)
+	if err != nil {
+		log.Fatalf("new consul client err: %+v", err)
+	}
+
+	//consul代理注册
+	reg := capi.AgentServiceRegistration{
+		Tags:    []string{"currencyservice"},
+		Name:    "currencyservice",
+		Address: ADDRESS,
+		Port:    PORT,
+	}
+
+	err = consulClient.Agent().ServiceRegister(&reg)
+	if err != nil {
+		log.Fatalf("consul register err: %+v", err)
+	}
 
 	//---------------grpc 服务-----------------
 	listen, err := net.Listen("tcp", ipadd)
@@ -34,23 +54,4 @@ func main() {
 		log.Fatalf("currencyservice set listen err: %+v", err)
 	}
 
-	//------------------consul 注册---------------
-	// consulConfig := api.DefaultConfig()
-	// consulClient, err := api.NewClient(consulConfig)
-	// if err != nil {
-	// 	log.Fatalf("new consul client err: %+v", err)
-	// }
-
-	// //consul代理注册
-	// reg := api.AgentServiceRegistration{
-	// 	Tags:    []string{"currencyservice"},
-	// 	Name:    "currencyservice",
-	// 	Address: ADDRESS,
-	// 	Port:    PORT,
-	// }
-
-	// err = consulClient.Agent().ServiceRegister(&reg)
-	// if err != nil {
-	// 	log.Fatalf("consul register err: %+v", err)
-	// }
 }
