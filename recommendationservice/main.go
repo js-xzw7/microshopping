@@ -43,8 +43,8 @@ func main() {
 	}
 
 	reg := api.AgentServiceRegistration{
-		Tags:    []string{"recommendationService"},
-		Name:    "recommendationService",
+		Tags:    []string{"recommendationservice"},
+		Name:    "recommendationservice",
 		Port:    PORT,
 		Address: ADDRESS,
 	}
