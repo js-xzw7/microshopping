@@ -25,8 +25,8 @@ func main() {
 		log.Fatalf("consul client create fatal:%v", err)
 	}
 	reg := api.AgentServiceRegistration{
-		Tags:    []string{"adservice"},
-		Name:    "adservice",
+		Tags:    []string{"adService"},
+		Name:    "adService",
 		Address: ADDRESS,
 		Port:    PROT,
 	}

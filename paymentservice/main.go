@@ -27,7 +27,7 @@ func main() {
 
 	reg := api.AgentServiceRegistration{
 		Tags:    []string{"paymentService"},
-		Name:    "paymentsService",
+		Name:    "paymentService",
 		Port:    PORT,
 		Address: ADDRESS,
 	}

@@ -27,8 +27,8 @@ func main() {
 
 	//consul代理注册
 	reg := capi.AgentServiceRegistration{
-		Tags:    []string{"currencyservice"},
-		Name:    "currencyservice",
+		Tags:    []string{"currencyService"},
+		Name:    "currencyService",
 		Address: ADDRESS,
 		Port:    PORT,
 	}

@@ -26,8 +26,8 @@ func main() {
 	}
 
 	reg := capi.AgentServiceRegistration{
-		Tags:    []string{"cartservice"},
-		Name:    "cartservice",
+		Tags:    []string{"cartService"},
+		Name:    "cartService",
 		Address: ADDRESS,
 		Port:    PORT,
 	}

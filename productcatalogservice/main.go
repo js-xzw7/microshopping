@@ -27,8 +27,8 @@ func main() {
 
 	//即将注册的服务信息
 	reg := capi.AgentServiceRegistration{
-		Tags:    []string{"productcatalogservice"},
-		Name:    "productcatalogservice",
+		Tags:    []string{"productcatalogService"},
+		Name:    "productcatalogService",
 		Address: ADDRESS,
 		Port:    PORT,
 	}
