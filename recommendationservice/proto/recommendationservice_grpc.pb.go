@@ -4,7 +4,7 @@
 // - protoc             v5.27.0
 // source: proto/recommendationservice.proto
 
-package recommendationservice
+package microshopping
 
 import (
 	context "context"
@@ -19,84 +19,84 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// RecommendationserviceClient is the client API for Recommendationservice service.
+// RecommendationServiceClient is the client API for RecommendationService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type RecommendationserviceClient interface {
+type RecommendationServiceClient interface {
 	ListRecommendations(ctx context.Context, in *ListRecommendationsRequest, opts ...grpc.CallOption) (*ListRecommendationsResponse, error)
 }
 
-type recommendationserviceClient struct {
+type recommendationServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewRecommendationserviceClient(cc grpc.ClientConnInterface) RecommendationserviceClient {
-	return &recommendationserviceClient{cc}
+func NewRecommendationServiceClient(cc grpc.ClientConnInterface) RecommendationServiceClient {
+	return &recommendationServiceClient{cc}
 }
 
-func (c *recommendationserviceClient) ListRecommendations(ctx context.Context, in *ListRecommendationsRequest, opts ...grpc.CallOption) (*ListRecommendationsResponse, error) {
+func (c *recommendationServiceClient) ListRecommendations(ctx context.Context, in *ListRecommendationsRequest, opts ...grpc.CallOption) (*ListRecommendationsResponse, error) {
 	out := new(ListRecommendationsResponse)
-	err := c.cc.Invoke(ctx, "/recommendationservice.Recommendationservice/ListRecommendations", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/microshopping.RecommendationService/ListRecommendations", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// RecommendationserviceServer is the server API for Recommendationservice service.
-// All implementations should embed UnimplementedRecommendationserviceServer
+// RecommendationServiceServer is the server API for RecommendationService service.
+// All implementations should embed UnimplementedRecommendationServiceServer
 // for forward compatibility
-type RecommendationserviceServer interface {
+type RecommendationServiceServer interface {
 	ListRecommendations(context.Context, *ListRecommendationsRequest) (*ListRecommendationsResponse, error)
 }
 
-// UnimplementedRecommendationserviceServer should be embedded to have forward compatible implementations.
-type UnimplementedRecommendationserviceServer struct {
+// UnimplementedRecommendationServiceServer should be embedded to have forward compatible implementations.
+type UnimplementedRecommendationServiceServer struct {
 }
 
-func (UnimplementedRecommendationserviceServer) ListRecommendations(context.Context, *ListRecommendationsRequest) (*ListRecommendationsResponse, error) {
+func (UnimplementedRecommendationServiceServer) ListRecommendations(context.Context, *ListRecommendationsRequest) (*ListRecommendationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRecommendations not implemented")
 }
 
-// UnsafeRecommendationserviceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to RecommendationserviceServer will
+// UnsafeRecommendationServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RecommendationServiceServer will
 // result in compilation errors.
-type UnsafeRecommendationserviceServer interface {
-	mustEmbedUnimplementedRecommendationserviceServer()
+type UnsafeRecommendationServiceServer interface {
+	mustEmbedUnimplementedRecommendationServiceServer()
 }
 
-func RegisterRecommendationserviceServer(s grpc.ServiceRegistrar, srv RecommendationserviceServer) {
-	s.RegisterService(&Recommendationservice_ServiceDesc, srv)
+func RegisterRecommendationServiceServer(s grpc.ServiceRegistrar, srv RecommendationServiceServer) {
+	s.RegisterService(&RecommendationService_ServiceDesc, srv)
 }
 
-func _Recommendationservice_ListRecommendations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _RecommendationService_ListRecommendations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListRecommendationsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RecommendationserviceServer).ListRecommendations(ctx, in)
+		return srv.(RecommendationServiceServer).ListRecommendations(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/recommendationservice.Recommendationservice/ListRecommendations",
+		FullMethod: "/microshopping.RecommendationService/ListRecommendations",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RecommendationserviceServer).ListRecommendations(ctx, req.(*ListRecommendationsRequest))
+		return srv.(RecommendationServiceServer).ListRecommendations(ctx, req.(*ListRecommendationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Recommendationservice_ServiceDesc is the grpc.ServiceDesc for Recommendationservice service.
+// RecommendationService_ServiceDesc is the grpc.ServiceDesc for RecommendationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Recommendationservice_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "recommendationservice.Recommendationservice",
-	HandlerType: (*RecommendationserviceServer)(nil),
+var RecommendationService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "microshopping.RecommendationService",
+	HandlerType: (*RecommendationServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "ListRecommendations",
-			Handler:    _Recommendationservice_ListRecommendations_Handler,
+			Handler:    _RecommendationService_ListRecommendations_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -122,7 +122,7 @@ func NewProductCatalogServiceClient(cc grpc.ClientConnInterface) ProductCatalogS
 
 func (c *productCatalogServiceClient) ListProducts(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListProductsResponse, error) {
 	out := new(ListProductsResponse)
-	err := c.cc.Invoke(ctx, "/recommendationservice.ProductCatalogService/ListProducts", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/microshopping.ProductCatalogService/ListProducts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func (c *productCatalogServiceClient) ListProducts(ctx context.Context, in *empt
 
 func (c *productCatalogServiceClient) GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*Product, error) {
 	out := new(Product)
-	err := c.cc.Invoke(ctx, "/recommendationservice.ProductCatalogService/GetProduct", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/microshopping.ProductCatalogService/GetProduct", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +140,7 @@ func (c *productCatalogServiceClient) GetProduct(ctx context.Context, in *GetPro
 
 func (c *productCatalogServiceClient) SearchProducts(ctx context.Context, in *SearchProductsRequest, opts ...grpc.CallOption) (*SearchProductsResponse, error) {
 	out := new(SearchProductsResponse)
-	err := c.cc.Invoke(ctx, "/recommendationservice.ProductCatalogService/SearchProducts", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/microshopping.ProductCatalogService/SearchProducts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +191,7 @@ func _ProductCatalogService_ListProducts_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/recommendationservice.ProductCatalogService/ListProducts",
+		FullMethod: "/microshopping.ProductCatalogService/ListProducts",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProductCatalogServiceServer).ListProducts(ctx, req.(*emptypb.Empty))
@@ -209,7 +209,7 @@ func _ProductCatalogService_GetProduct_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/recommendationservice.ProductCatalogService/GetProduct",
+		FullMethod: "/microshopping.ProductCatalogService/GetProduct",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProductCatalogServiceServer).GetProduct(ctx, req.(*GetProductRequest))
@@ -227,7 +227,7 @@ func _ProductCatalogService_SearchProducts_Handler(srv interface{}, ctx context.
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/recommendationservice.ProductCatalogService/SearchProducts",
+		FullMethod: "/microshopping.ProductCatalogService/SearchProducts",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProductCatalogServiceServer).SearchProducts(ctx, req.(*SearchProductsRequest))
@@ -239,7 +239,7 @@ func _ProductCatalogService_SearchProducts_Handler(srv interface{}, ctx context.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ProductCatalogService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "recommendationservice.ProductCatalogService",
+	ServiceName: "microshopping.ProductCatalogService",
 	HandlerType: (*ProductCatalogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"strconv"
 	"text/template"
@@ -12,6 +11,7 @@ import (
 	"github.com/hashicorp/consul/api"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	pb "frontend/proto"
 )
@@ -39,7 +39,7 @@ var (
 	}
 )
 
-type ctxKeySessionID struct{}
+// type ctxKeySessionID struct{}
 
 // 前端server
 type FrontendServer struct {
@@ -59,12 +59,10 @@ func GetGrpcConn(consulClient *api.Client, serviceName string, serviceTag string
 		fmt.Println("获取健康服务报错：", err_service)
 		return nil
 	}
-	// fmt.Println(service[0].Service)
 	s := service[0].Service
 	address := s.Address + ":" + strconv.Itoa(s.Port)
-	fmt.Printf("address: %v\n", address)
 	//链接grpc服务
-	grpcConn, _ := grpc.Dial(address, grpc.WithInsecure())
+	grpcConn, _ := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	return grpcConn
 }
@@ -92,7 +90,7 @@ func main() {
 		return
 	}
 
-	svc := &FrontendServer{
+	svc := FrontendServer{
 		adService:             pb.NewAdServiceClient(GetGrpcConn(consulClient, "adService", "adService")),
 		cartService:           pb.NewCartServiceClient(GetGrpcConn(consulClient, "cartService", "cartService")),
 		checkoutService:       pb.NewCheckoutServiceClient(GetGrpcConn(consulClient, "checkoutService", "checkoutService")),
@@ -101,6 +99,17 @@ func main() {
 		recommendationService: pb.NewRecommendationServiceClient(GetGrpcConn(consulClient, "recommendationService", "recommendationService")),
 		shippingService:       pb.NewShippingServiceClient(GetGrpcConn(consulClient, "shippingService", "shippingService")),
 	}
+
+	// recomRes, err := svc.recommendationService.ListRecommendations(context.TODO(), &pb.ListRecommendationsRequest{
+	// 	UserId:     "1",
+	// 	ProductIds: []string{"1"},
+	// })
+
+	// if err != nil {
+	// 	fmt.Println("获取推荐商品报错：", err)
+	// }
+
+	// fmt.Printf("获取推荐商品：%v\n", recomRes)
 
 	r := gin.Default()
 
@@ -113,6 +122,7 @@ func main() {
 
 	r.Static("/static", "./static")
 
+	r.Use(setCookie)
 	// 首页
 	r.GET("/", svc.HomeHandler)
 	// 商品
@@ -132,12 +142,5 @@ func main() {
 
 	if err := r.Run(":8052"); err != nil {
 		log.Fatalf("gin启动失败: %v", err)
-	}
-}
-
-func ginAdapter(next http.Handler) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		next.ServeHTTP(c.Writer, c.Request)
-		c.Next()
 	}
 }

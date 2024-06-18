@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"cartservice/cartstore"
 	handler "cartservice/handler"
 	pb "cartservice/proto"
 
@@ -46,7 +47,7 @@ func main() {
 	log.Default().Printf("tcp server statrt: %s", ipaddr)
 
 	grpcService := grpc.NewServer()
-	pb.RegisterCartServiceServer(grpcService, new(handler.CartService))
+	pb.RegisterCartServiceServer(grpcService, &handler.CartService{Store: cartstore.NewMemoryCartStore()})
 
 	if err := grpcService.Serve(listen); err != nil {
 		log.Fatalf("cartservice grpc service start err: %+v", err)

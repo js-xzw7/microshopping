@@ -22,8 +22,10 @@ func (s *CartService) AddItem(ctx context.Context, req *pb.AddItemRequest) (res 
 
 // 获得购物车
 func (s *CartService) GetCart(ctx context.Context, req *pb.GetCartRequest) (*pb.Cart, error) {
-	fmt.Printf("ctx：%v\n", ctx)
-	fmt.Printf("req:%v\n", req)
+	if req.UserId == "" {
+		return nil, fmt.Errorf("empty user id")
+	}
+
 	cart, err := s.Store.GetCart(ctx, req.UserId)
 	if err != nil {
 		return nil, err

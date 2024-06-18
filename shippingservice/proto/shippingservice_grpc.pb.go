@@ -4,7 +4,7 @@
 // - protoc             v5.27.0
 // source: proto/shippingservice.proto
 
-package shippingService
+package microshopping
 
 import (
 	context "context"
@@ -36,7 +36,7 @@ func NewShippingServiceClient(cc grpc.ClientConnInterface) ShippingServiceClient
 
 func (c *shippingServiceClient) GetQuote(ctx context.Context, in *GetQuoteRequest, opts ...grpc.CallOption) (*GetQuoteResponse, error) {
 	out := new(GetQuoteResponse)
-	err := c.cc.Invoke(ctx, "/shippingService.shippingService/GetQuote", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/microshopping.ShippingService/GetQuote", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (c *shippingServiceClient) GetQuote(ctx context.Context, in *GetQuoteReques
 
 func (c *shippingServiceClient) ShipOrder(ctx context.Context, in *ShipOrderRequest, opts ...grpc.CallOption) (*ShipOrderResponse, error) {
 	out := new(ShipOrderResponse)
-	err := c.cc.Invoke(ctx, "/shippingService.shippingService/ShipOrder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/microshopping.ShippingService/ShipOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func _ShippingService_GetQuote_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shippingService.shippingService/GetQuote",
+		FullMethod: "/microshopping.ShippingService/GetQuote",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShippingServiceServer).GetQuote(ctx, req.(*GetQuoteRequest))
@@ -110,7 +110,7 @@ func _ShippingService_ShipOrder_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/shippingService.shippingService/ShipOrder",
+		FullMethod: "/microshopping.ShippingService/ShipOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShippingServiceServer).ShipOrder(ctx, req.(*ShipOrderRequest))
@@ -122,7 +122,7 @@ func _ShippingService_ShipOrder_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ShippingService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "shippingService.shippingService",
+	ServiceName: "microshopping.ShippingService",
 	HandlerType: (*ShippingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

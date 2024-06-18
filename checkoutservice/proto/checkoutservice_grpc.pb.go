@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -22,9 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CartServiceClient interface {
-	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*Empty, error)
+	AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetCart(ctx context.Context, in *GetCartRequest, opts ...grpc.CallOption) (*Cart, error)
-	EmptyCart(ctx context.Context, in *EmptyCartRequest, opts ...grpc.CallOption) (*Empty, error)
+	EmptyCart(ctx context.Context, in *EmptyCartRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type cartServiceClient struct {
@@ -35,8 +36,8 @@ func NewCartServiceClient(cc grpc.ClientConnInterface) CartServiceClient {
 	return &cartServiceClient{cc}
 }
 
-func (c *cartServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *cartServiceClient) AddItem(ctx context.Context, in *AddItemRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/microshopping.CartService/AddItem", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -53,8 +54,8 @@ func (c *cartServiceClient) GetCart(ctx context.Context, in *GetCartRequest, opt
 	return out, nil
 }
 
-func (c *cartServiceClient) EmptyCart(ctx context.Context, in *EmptyCartRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *cartServiceClient) EmptyCart(ctx context.Context, in *EmptyCartRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/microshopping.CartService/EmptyCart", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,22 +67,22 @@ func (c *cartServiceClient) EmptyCart(ctx context.Context, in *EmptyCartRequest,
 // All implementations should embed UnimplementedCartServiceServer
 // for forward compatibility
 type CartServiceServer interface {
-	AddItem(context.Context, *AddItemRequest) (*Empty, error)
+	AddItem(context.Context, *AddItemRequest) (*emptypb.Empty, error)
 	GetCart(context.Context, *GetCartRequest) (*Cart, error)
-	EmptyCart(context.Context, *EmptyCartRequest) (*Empty, error)
+	EmptyCart(context.Context, *EmptyCartRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedCartServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedCartServiceServer struct {
 }
 
-func (UnimplementedCartServiceServer) AddItem(context.Context, *AddItemRequest) (*Empty, error) {
+func (UnimplementedCartServiceServer) AddItem(context.Context, *AddItemRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddItem not implemented")
 }
 func (UnimplementedCartServiceServer) GetCart(context.Context, *GetCartRequest) (*Cart, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCart not implemented")
 }
-func (UnimplementedCartServiceServer) EmptyCart(context.Context, *EmptyCartRequest) (*Empty, error) {
+func (UnimplementedCartServiceServer) EmptyCart(context.Context, *EmptyCartRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EmptyCart not implemented")
 }
 
@@ -262,7 +263,7 @@ var RecommendationService_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductCatalogServiceClient interface {
-	ListProducts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListProductsResponse, error)
+	ListProducts(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListProductsResponse, error)
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*Product, error)
 	SearchProducts(ctx context.Context, in *SearchProductsRequest, opts ...grpc.CallOption) (*SearchProductsResponse, error)
 }
@@ -275,7 +276,7 @@ func NewProductCatalogServiceClient(cc grpc.ClientConnInterface) ProductCatalogS
 	return &productCatalogServiceClient{cc}
 }
 
-func (c *productCatalogServiceClient) ListProducts(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListProductsResponse, error) {
+func (c *productCatalogServiceClient) ListProducts(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListProductsResponse, error) {
 	out := new(ListProductsResponse)
 	err := c.cc.Invoke(ctx, "/microshopping.ProductCatalogService/ListProducts", in, out, opts...)
 	if err != nil {
@@ -306,7 +307,7 @@ func (c *productCatalogServiceClient) SearchProducts(ctx context.Context, in *Se
 // All implementations should embed UnimplementedProductCatalogServiceServer
 // for forward compatibility
 type ProductCatalogServiceServer interface {
-	ListProducts(context.Context, *Empty) (*ListProductsResponse, error)
+	ListProducts(context.Context, *emptypb.Empty) (*ListProductsResponse, error)
 	GetProduct(context.Context, *GetProductRequest) (*Product, error)
 	SearchProducts(context.Context, *SearchProductsRequest) (*SearchProductsResponse, error)
 }
@@ -315,7 +316,7 @@ type ProductCatalogServiceServer interface {
 type UnimplementedProductCatalogServiceServer struct {
 }
 
-func (UnimplementedProductCatalogServiceServer) ListProducts(context.Context, *Empty) (*ListProductsResponse, error) {
+func (UnimplementedProductCatalogServiceServer) ListProducts(context.Context, *emptypb.Empty) (*ListProductsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProducts not implemented")
 }
 func (UnimplementedProductCatalogServiceServer) GetProduct(context.Context, *GetProductRequest) (*Product, error) {
@@ -337,7 +338,7 @@ func RegisterProductCatalogServiceServer(s grpc.ServiceRegistrar, srv ProductCat
 }
 
 func _ProductCatalogService_ListProducts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -349,7 +350,7 @@ func _ProductCatalogService_ListProducts_Handler(srv interface{}, ctx context.Co
 		FullMethod: "/microshopping.ProductCatalogService/ListProducts",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductCatalogServiceServer).ListProducts(ctx, req.(*Empty))
+		return srv.(ProductCatalogServiceServer).ListProducts(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -538,7 +539,7 @@ var ShippingService_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CurrencyServiceClient interface {
-	GetSupportedCurrencies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error)
+	GetSupportedCurrencies(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error)
 	Convert(ctx context.Context, in *CurrencyConversionRequest, opts ...grpc.CallOption) (*Money, error)
 }
 
@@ -550,7 +551,7 @@ func NewCurrencyServiceClient(cc grpc.ClientConnInterface) CurrencyServiceClient
 	return &currencyServiceClient{cc}
 }
 
-func (c *currencyServiceClient) GetSupportedCurrencies(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error) {
+func (c *currencyServiceClient) GetSupportedCurrencies(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSupportedCurrenciesResponse, error) {
 	out := new(GetSupportedCurrenciesResponse)
 	err := c.cc.Invoke(ctx, "/microshopping.CurrencyService/GetSupportedCurrencies", in, out, opts...)
 	if err != nil {
@@ -572,7 +573,7 @@ func (c *currencyServiceClient) Convert(ctx context.Context, in *CurrencyConvers
 // All implementations should embed UnimplementedCurrencyServiceServer
 // for forward compatibility
 type CurrencyServiceServer interface {
-	GetSupportedCurrencies(context.Context, *Empty) (*GetSupportedCurrenciesResponse, error)
+	GetSupportedCurrencies(context.Context, *emptypb.Empty) (*GetSupportedCurrenciesResponse, error)
 	Convert(context.Context, *CurrencyConversionRequest) (*Money, error)
 }
 
@@ -580,7 +581,7 @@ type CurrencyServiceServer interface {
 type UnimplementedCurrencyServiceServer struct {
 }
 
-func (UnimplementedCurrencyServiceServer) GetSupportedCurrencies(context.Context, *Empty) (*GetSupportedCurrenciesResponse, error) {
+func (UnimplementedCurrencyServiceServer) GetSupportedCurrencies(context.Context, *emptypb.Empty) (*GetSupportedCurrenciesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSupportedCurrencies not implemented")
 }
 func (UnimplementedCurrencyServiceServer) Convert(context.Context, *CurrencyConversionRequest) (*Money, error) {
@@ -599,7 +600,7 @@ func RegisterCurrencyServiceServer(s grpc.ServiceRegistrar, srv CurrencyServiceS
 }
 
 func _CurrencyService_GetSupportedCurrencies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -611,7 +612,7 @@ func _CurrencyService_GetSupportedCurrencies_Handler(srv interface{}, ctx contex
 		FullMethod: "/microshopping.CurrencyService/GetSupportedCurrencies",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CurrencyServiceServer).GetSupportedCurrencies(ctx, req.(*Empty))
+		return srv.(CurrencyServiceServer).GetSupportedCurrencies(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -742,7 +743,7 @@ var PaymentService_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EmailServiceClient interface {
-	SendOrderConfirmation(ctx context.Context, in *SendOrderConfirmationRequest, opts ...grpc.CallOption) (*Empty, error)
+	SendOrderConfirmation(ctx context.Context, in *SendOrderConfirmationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type emailServiceClient struct {
@@ -753,8 +754,8 @@ func NewEmailServiceClient(cc grpc.ClientConnInterface) EmailServiceClient {
 	return &emailServiceClient{cc}
 }
 
-func (c *emailServiceClient) SendOrderConfirmation(ctx context.Context, in *SendOrderConfirmationRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *emailServiceClient) SendOrderConfirmation(ctx context.Context, in *SendOrderConfirmationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/microshopping.EmailService/SendOrderConfirmation", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -766,14 +767,14 @@ func (c *emailServiceClient) SendOrderConfirmation(ctx context.Context, in *Send
 // All implementations should embed UnimplementedEmailServiceServer
 // for forward compatibility
 type EmailServiceServer interface {
-	SendOrderConfirmation(context.Context, *SendOrderConfirmationRequest) (*Empty, error)
+	SendOrderConfirmation(context.Context, *SendOrderConfirmationRequest) (*emptypb.Empty, error)
 }
 
 // UnimplementedEmailServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedEmailServiceServer struct {
 }
 
-func (UnimplementedEmailServiceServer) SendOrderConfirmation(context.Context, *SendOrderConfirmationRequest) (*Empty, error) {
+func (UnimplementedEmailServiceServer) SendOrderConfirmation(context.Context, *SendOrderConfirmationRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendOrderConfirmation not implemented")
 }
 

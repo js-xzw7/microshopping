@@ -34,14 +34,14 @@ func init() {
 }
 
 // session 会话
-func sessionID(r *http.Request) string {
-	v := r.Context().Value(ctxKeySessionID{})
-	fmt.Printf("sessionID:%v \n", v)
-	if v != nil {
-		return v.(string)
+func sessionID(ctx *gin.Context) string {
+	session, err := ctx.Cookie(cookieSessionID)
+	if err != nil {
+		log.Printf("获取session[%s]失败: %v", cookieSessionID, err)
+		return "noSetCookie"
 	}
 
-	return ""
+	return session
 }
 
 // 当前货币
@@ -72,7 +72,7 @@ func renderHTTPError(log logrus.FieldLogger, ctx *gin.Context, err error, code i
 	w.WriteHeader(code)
 
 	resultMap := map[string]interface{}{
-		"session_id":  sessionID(r),
+		"session_id":  sessionID(ctx),
 		"request_id":  r.Context().Value(ctxKeyRequestID{}),
 		"error":       errMsg,
 		"status_code": code,
@@ -110,15 +110,15 @@ func renderCurrencyLogo(currencyCode string) string {
 	return logo
 }
 
-// 判断字符串是否在字符串切片
-func stringinSlice(slice []string, val string) bool {
-	for _, item := range slice {
-		if item == val {
-			return true
-		}
-	}
-	return false
-}
+// // 判断字符串是否在字符串切片
+// func stringinSlice(slice []string, val string) bool {
+// 	for _, item := range slice {
+// 		if item == val {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 // 格式化货币
 func renderMoney(money *pb.Money) string {
@@ -141,7 +141,7 @@ func (fe *FrontendServer) HomeHandler(ctx *gin.Context) {
 		return
 	}
 
-	cart, err := fe.getCart(r.Context(), sessionID(r))
+	cart, err := fe.getCart(r.Context(), sessionID(ctx))
 	if err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "不能查询到购物车"), http.StatusInternalServerError)
 		return
@@ -163,7 +163,7 @@ func (fe *FrontendServer) HomeHandler(ctx *gin.Context) {
 	}
 
 	resultMap := map[string]interface{}{
-		"session_id":    sessionID(r),
+		"session_id":    sessionID(ctx),
 		"request_id":    r.Context().Value(ctxKeyRequestID{}),
 		"user_currency": currentCurrency(r),
 		"show_currency": true,
@@ -199,7 +199,7 @@ func (fe *FrontendServer) ProductHandler(ctx *gin.Context) {
 		return
 	}
 
-	cart, err := fe.getCart(r.Context(), sessionID(r))
+	cart, err := fe.getCart(r.Context(), sessionID(ctx))
 	if err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "不能查询到购物车：%s"), http.StatusInternalServerError)
 		return
@@ -211,7 +211,7 @@ func (fe *FrontendServer) ProductHandler(ctx *gin.Context) {
 		return
 	}
 
-	recommendations, err := fe.getRecommendations(r.Context(), sessionID(r), []string{id})
+	recommendations, err := fe.getRecommendations(r.Context(), sessionID(ctx), []string{id})
 	if err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "商品推荐失败：%s"), http.StatusInternalServerError)
 		return
@@ -223,7 +223,7 @@ func (fe *FrontendServer) ProductHandler(ctx *gin.Context) {
 	}{p, price}
 
 	resultMap := map[string]interface{}{
-		"session_id":      sessionID(r),
+		"session_id":      sessionID(ctx),
 		"request_id":      r.Context().Value(ctxKeyRequestID{}),
 		"ad":              fe.chooseAd(r.Context(), p.Categories, log),
 		"user_currency":   currentCurrency(r),
@@ -257,7 +257,7 @@ func (fe *FrontendServer) addToCartHandler(ctx *gin.Context) {
 		return
 	}
 
-	if err := fe.insertCart(r.Context(), sessionID(r), p.GetId(), int32(quantity)); err != nil {
+	if err := fe.insertCart(r.Context(), sessionID(ctx), p.GetId(), int32(quantity)); err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "添加购物车失败"), http.StatusInternalServerError)
 		return
 	}
@@ -273,7 +273,7 @@ func (fe *FrontendServer) emptyCartHandler(ctx *gin.Context) {
 
 	log.Debug("清空购物车")
 
-	if err := fe.emptyCart(r.Context(), sessionID(r)); err != nil {
+	if err := fe.emptyCart(r.Context(), sessionID(ctx)); err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "清空购物车失败"), http.StatusInternalServerError)
 		return
 	}
@@ -293,13 +293,13 @@ func (fe *FrontendServer) viewCartHandler(ctx *gin.Context) {
 		return
 	}
 
-	cart, err := fe.getCart(r.Context(), sessionID(r))
+	cart, err := fe.getCart(r.Context(), sessionID(ctx))
 	if err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "不能查询到购物车"), http.StatusInternalServerError)
 		return
 	}
 
-	recommendations, err := fe.getRecommendations(r.Context(), sessionID(r), productIDs(cart))
+	recommendations, err := fe.getRecommendations(r.Context(), sessionID(ctx), productIDs(cart))
 	if err != nil {
 		renderHTTPError(log, ctx, errors.Wrap(err, "获取推荐商品失败"), http.StatusInternalServerError)
 		return
@@ -346,7 +346,7 @@ func (fe *FrontendServer) viewCartHandler(ctx *gin.Context) {
 	year := time.Now().Year()
 
 	resultMap := map[string]interface{}{
-		"session_id":       sessionID(r),
+		"session_id":       sessionID(ctx),
 		"request_id":       r.Context().Value(ctxKeyRequestID{}),
 		"user_currency":    currentCurrency(r),
 		"currencies":       currencies,
@@ -387,7 +387,7 @@ func (fe *FrontendServer) placeOrderHandler(ctx *gin.Context) {
 			CreditCardExpirationMonth: int32(ccMonth),
 			CreditCardCvv:             int32(ccCVV),
 		},
-		UserId:       sessionID(r),
+		UserId:       sessionID(ctx),
 		UserCurrency: currentCurrency(r),
 		Address: &pb.Address{
 			StreetAddress: streetAddress,
@@ -406,7 +406,7 @@ func (fe *FrontendServer) placeOrderHandler(ctx *gin.Context) {
 	log.WithField("order", order.GetOrder().GetOrderId()).Info("下单")
 
 	order.GetOrder().GetItems()
-	recommendations, _ := fe.getRecommendations(r.Context(), sessionID(r), nil)
+	recommendations, _ := fe.getRecommendations(r.Context(), sessionID(ctx), nil)
 
 	totalPaid := order.GetOrder().GetShippingCost()
 	for _, v := range order.GetOrder().GetItems() {
@@ -421,7 +421,7 @@ func (fe *FrontendServer) placeOrderHandler(ctx *gin.Context) {
 	}
 
 	resultMap := map[string]interface{}{
-		"session_id":      sessionID(r),
+		"session_id":      sessionID(ctx),
 		"request_id":      r.Context().Value(ctxKeyRequestID{}),
 		"user_currency":   currentCurrency(r),
 		"show_currency":   false,

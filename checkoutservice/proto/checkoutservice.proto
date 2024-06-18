@@ -3,13 +3,14 @@ syntax = "proto3";
 package microshopping;
 
 option go_package = "./proto;microshopping";
+import "google/protobuf/empty.proto";
 
 // -----------------Cart service-----------------
 
 service CartService {
-    rpc AddItem(AddItemRequest) returns (Empty) {}
+    rpc AddItem(AddItemRequest) returns (google.protobuf.Empty) {}
     rpc GetCart(GetCartRequest) returns (Cart) {}
-    rpc EmptyCart(EmptyCartRequest) returns (Empty) {}
+    rpc EmptyCart(EmptyCartRequest) returns (google.protobuf.Empty) {}
 }
 
 message CartItem {
@@ -35,8 +36,6 @@ message Cart {
     repeated CartItem items = 2;
 }
 
-message Empty {}
-
 // ---------------Recommendation service----------
 
 service RecommendationService {
@@ -55,7 +54,7 @@ message ListRecommendationsResponse {
 // ---------------Product Catalog----------------
 
 service ProductCatalogService {
-    rpc ListProducts(Empty) returns (ListProductsResponse) {}
+    rpc ListProducts(google.protobuf.Empty) returns (ListProductsResponse) {}
     rpc GetProduct(GetProductRequest) returns (Product) {}
     rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse) {}
 }
@@ -122,7 +121,7 @@ message Address {
 // -----------------Currency service-----------------
 
 service CurrencyService {
-    rpc GetSupportedCurrencies(Empty) returns (GetSupportedCurrenciesResponse) {}
+    rpc GetSupportedCurrencies(google.protobuf.Empty) returns (GetSupportedCurrenciesResponse) {}
     rpc Convert(CurrencyConversionRequest) returns (Money) {}
 }
 
@@ -179,7 +178,7 @@ message ChargeResponse {
 // -------------Email service-----------------
 
 service EmailService {
-    rpc SendOrderConfirmation(SendOrderConfirmationRequest) returns (Empty) {}
+    rpc SendOrderConfirmation(SendOrderConfirmationRequest) returns (google.protobuf.Empty) {}
 }
 
 message OrderItem {

@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package recommendationservice;
-option go_package="./proto; recommendationservice";
+package microshopping;
+option go_package="./proto; microshopping";
 
 import "google/protobuf/empty.proto";
 
@@ -24,7 +24,7 @@ message Money {
 }
 
 //---------------------------------推荐服务--------------------------------
-service Recommendationservice{
+service RecommendationService{
     rpc ListRecommendations(ListRecommendationsRequest) returns (ListRecommendationsResponse) {}
 }
 

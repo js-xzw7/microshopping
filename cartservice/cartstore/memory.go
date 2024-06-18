@@ -19,7 +19,6 @@ type memoryCartStore struct {
 func (m *memoryCartStore) AddItem(ctx context.Context, userId, productId string, quantity int32, req *emptypb.Empty) (res *emptypb.Empty, err error) {
 	m.Lock()
 	defer m.Unlock()
-
 	if cart, ok := m.carts[userId]; ok {
 		if currentQuantity, ok := cart[productId]; ok {
 			cart[productId] = currentQuantity + quantity
@@ -29,8 +28,7 @@ func (m *memoryCartStore) AddItem(ctx context.Context, userId, productId string,
 	} else {
 		m.carts[userId] = map[string]int32{productId: quantity}
 	}
-
-	return res, nil
+	return new(emptypb.Empty), nil
 }
 
 // 清空购物车
@@ -40,7 +38,7 @@ func (m *memoryCartStore) EmptyCart(ctx context.Context, userId string) (res *em
 
 	delete(m.carts, userId)
 
-	return res, nil
+	return new(emptypb.Empty), nil
 }
 
 // 获取购物车

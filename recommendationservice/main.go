@@ -60,12 +60,14 @@ func main() {
 	}
 	defer listen.Close()
 
+	log.Default().Printf("tcp server start at %v", ipaddr)
+
 	grpcService := grpc.NewServer()
 	recommendationservice := &handler.RecommendationService{
 		ProductCatalogService: pb.NewProductCatalogServiceClient(GetGrpcConn(consulClient, "productcatalogService", "productcatalogService")),
 	}
 
-	pb.RegisterRecommendationserviceServer(grpcService, recommendationservice)
+	pb.RegisterRecommendationServiceServer(grpcService, recommendationservice)
 
 	if err = grpcService.Serve(listen); err != nil {
 		log.Fatalf("grpc server error:%v", err)

@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package shippingService;
-option go_package="./proto;shippingService";
+package microshopping;
+option go_package="./proto;microshopping";
 
 message CartItem{
     string product_id = 1;
@@ -27,7 +27,7 @@ message Money {
 }
 
 //---------------------------配送服务------------------------------
-service shippingService{
+service ShippingService{
     rpc GetQuote(GetQuoteRequest) returns (GetQuoteResponse) {}
     rpc ShipOrder(ShipOrderRequest) returns (ShipOrderResponse) {}
 }

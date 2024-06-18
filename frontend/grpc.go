@@ -8,12 +8,13 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 const avoidNoopCurrencyConversionRPC = false
 
 func (fe *FrontendServer) getCurrencies(ctx context.Context) ([]string, error) {
-	currs, err := fe.currencyService.GetSupportedCurrencies(ctx, &pb.Empty{})
+	currs, err := fe.currencyService.GetSupportedCurrencies(ctx, &emptypb.Empty{})
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +29,7 @@ func (fe *FrontendServer) getCurrencies(ctx context.Context) ([]string, error) {
 }
 
 func (fe *FrontendServer) getProducts(ctx context.Context) ([]*pb.Product, error) {
-	res, err := fe.productCatalogService.ListProducts(ctx, &pb.Empty{})
+	res, err := fe.productCatalogService.ListProducts(ctx, &emptypb.Empty{})
 	return res.GetProducts(), err
 }
 

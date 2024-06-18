@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"log"
 	"os"
 	pb "productcatalogservice/proto"
@@ -53,6 +54,7 @@ func (s *ProductCatalogService) parseCatalog() []*pb.Product {
 	if reloadCatalog || len(s.products) == 0 {
 		catalog, err := s.readCatalogFile()
 		if err != nil {
+			fmt.Printf("读取商品文件失败：%v", err)
 			return []*pb.Product{}
 		}
 

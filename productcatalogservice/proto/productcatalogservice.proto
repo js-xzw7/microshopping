@@ -10,7 +10,7 @@ message Money {
 
     //货币单位
     //例如 currency_code= USD，则1个单位是1美元
-    int64 uints = 2;
+    int64 units = 2;
 
     //数量的纳米（10^-9）单位。
     //该值必须介于-99999999和+99999999之间。
